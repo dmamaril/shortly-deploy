@@ -2,8 +2,8 @@
 var db = require('../config');
 var User = require('../models/user');
 
-var Users = new db.Collection();
-
-Users.model = User;
+var Users = Backbone.Collection.extend({
+  model: User
+});
 
 module.exports = Users;
