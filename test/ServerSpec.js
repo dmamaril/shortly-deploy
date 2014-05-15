@@ -11,7 +11,7 @@ var Link = require('../app/models/link');
 // NOTE: these tests are designed for mongo!
 /////////////////////////////////////////////////////
 
-xdescribe('', function() {
+describe('', function() {
 
   beforeEach(function(done) {
     // Log out currently signed in user
@@ -94,7 +94,7 @@ xdescribe('', function() {
         link = new Link({
           url: 'http://www.roflzoo.com/',
           title: 'Rofl Zoo - Daily funny animal pictures',
-          base_url: 'http://127.0.0.1:4568',
+          baseUrl: 'http://127.0.0.1:4568',
           visits: 0
         })
 
@@ -123,6 +123,7 @@ xdescribe('', function() {
           .get('/' + sha)
           .expect(302)
           .expect(function(res) {
+            console.log(res);
             var redirect = res.headers.location;
             expect(redirect).to.equal('http://www.roflzoo.com/');
           })
