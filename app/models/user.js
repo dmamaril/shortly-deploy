@@ -9,6 +9,15 @@ var user = mongoose.Schema({
     password: String
   });
 
+user.pre('save', function(next){
+  var cipher = Promise.promisify(bcrypt.hash);
+  cipher(this.password, null, null).bind(this)
+    .then(function(hash) {
+      this.password = hash;
+      next();
+    });
+});
+
 user.methods.initialize = function(){
   this.on('creating', this.hashPassword);
 };
@@ -20,14 +29,14 @@ user.methods.comparePassword = function(attemptedPassword, callback) {
   });
 };
 
-user.methods.hashPassword = function(){
-  var cipher = Promise.promisify(bcrypt.hash);
-  return cipher(this.password, null, null).bind(this)
-    .then(function(hash) {
-      this.set('password', hash);
-      this.save();
-    });
-};
+// user.methods.hashPassword = function(){
+//   var cipher = Promise.promisify(bcrypt.hash);
+//   cipher(this.password, null, null).bind(this)
+//     .then(function(hash) {
+//       this.set('password', hash);
+//       this.save();
+//     });
+// };
 
 var User = mongoose.model('User', user);
 

@@ -96,7 +96,7 @@ describe('', function() {
           title: 'Rofl Zoo - Daily funny animal pictures',
           baseUrl: 'http://127.0.0.1:4568',
           visits: 0
-        })
+        });
 
         link.save(function() {
           done();
@@ -104,13 +104,14 @@ describe('', function() {
       });
 
       it('Returns the same shortened code if attempted to add the same URL twice', function(done) {
-        var firstCode = link.code
+        var firstCode = link.code;
         request(app)
           .post('/links')
           .send({
             'url': 'http://www.roflzoo.com/'})
           .expect(200)
           .expect(function(res) {
+            console.log(res.body.code);
             var secondCode = res.body.code;
             expect(secondCode).to.equal(firstCode);
           })
@@ -123,7 +124,6 @@ describe('', function() {
           .get('/' + sha)
           .expect(302)
           .expect(function(res) {
-            console.log(res);
             var redirect = res.headers.location;
             expect(redirect).to.equal('http://www.roflzoo.com/');
           })

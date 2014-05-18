@@ -11,12 +11,12 @@ var link = mongoose.Schema({
   visit: Number
 });
 
-link.methods.shorten = function(callback){
+link.pre('save', function(next){
   var shasum = crypto.createHash('sha1');
   shasum.update(this.get('url'));
   this.set('code', shasum.digest('hex').slice(0, 5));
-  callback();
-};
+  next();
+});
 
 var Link = mongoose.model('Link', link);
 
